@@ -1,28 +1,25 @@
-<div class="article-entry-header">
-    <h3 class="article-entry-title">
-        <a href="{{ url_for('.articleDetails', id=article.id) }}">{{ article.title }}</a>
-    </h3>
-</div>
-<div class="article-entry-info">
-    <div class="base-info">
-        <span style="color: #465E39;">{{ moment(article.create_time.date()).format('LL') }}</span>&nbsp;
-        <span class="label label-warning">
-            <a href="{{ url_for('main.article_sources', id=article.source.id) }}" target="_blank" style="color: white">
-                {{ article.source.name }}
+<div class="article-center">
+    <div class="article-entry-header">
+        <div class="article-entry-title">
+            <a href="{{ url_for('.articleDetails', id=article.id) }}">
+                <span class="node">{{ article.articleType.name }}&nbsp;</span>
+                {{ article.title }}
             </a>
-        </span>&nbsp;
-        <span class="label label-info">
-            <a href="{{ url_for('main.articleTypes', id=article.articleType.id) }}" target="_blank"
-               style="color: white">
-                {{ article.articleType.name }}
-            </a>
-        </span>
+        </div>
     </div>
-    <div class="main-info">
-        <span style="color: #555555; font-size: 12px;">{{ article.num_of_view }}人阅读</span>
-        <span class="label label-success">评论 {{ article.comments.count() }}</span>
+    <div class="article-entry-info">
+        <div class="base-info">
+            <span style="color: #777; font-size: 13px;">{{ moment(article.create_time.date()).format('LL') }}</span>&nbsp;
+            {% set list = article.tags.split(',') %}
+            {% for tag in list %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
+        </div>
     </div>
 </div>
-<div class="article-entry-sum">
-    <p>{{ article.summary }}</p>
+<div class="main-info">
+    <span>{{ article.num_of_view }}人阅读</span>
 </div>
+<!--<div class="article-entry-sum">-->
+<!--<p>{{ article.summary }}</p>-->
+<!--</div>-->

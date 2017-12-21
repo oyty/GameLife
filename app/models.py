@@ -306,7 +306,7 @@ class Article(db.Model):
     title = db.Column(db.String(64), unique=True)
     content = db.Column(db.Text)
     summary = db.Column(db.Text)
-    tags = db.Column(db.Text)  # tags列表以，分割
+    tags = db.Column(db.String(100))  # tags列表以，分割
     create_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     update_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     num_of_view = db.Column(db.Integer, default=0)

@@ -19,7 +19,7 @@ def index():
     for p in pagination.iter_pages():
         print(p)
     return render_template('index.html', articles=articles,
-                           pagination=pagination, endpoint='.index')
+                           pagination=pagination, endpoint='.index', last_index=len(articles))
 
 
 @main.route('/article-types/<int:id>/')
@@ -86,7 +86,7 @@ def articleDetails(id):
         error_out=False)
     comments = pagination.items
     article.add_view(article, db)
-    return render_template('article_detials.html', User=User, article=article,
+    return render_template('article_details.html', User=User, article=article,
                            comments=comments, pagination=pagination, page=page,
                            form=form, endpoint='.articleDetails', id=article.id)
     # page=page, this is used to return the current page args to the

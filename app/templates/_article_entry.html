@@ -1,5 +1,15 @@
 {% for article in articles %}
-    <div id='article-entry' class="entry-box">
-    {% include '_article_info.html' %}
+    {% if loop.index == 1 %}
+    <div class="entry-box entry-box-top">
+        {% include '_article_info.html' %}
     </div>
+    {% elif loop.index == last_index %}
+    <div class="entry-box entry-box-bottom">
+        {% include '_article_info.html' %}
+    </div>
+    {% else %}
+    <div class="entry-box">
+        {% include '_article_info.html' %}
+    </div>
+{% endif %}
 {% endfor %}

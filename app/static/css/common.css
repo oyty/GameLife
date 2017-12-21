@@ -16,43 +16,71 @@ body {
 }
 .entry-box {
     background: #fff;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-left: 15px;
     padding-right: 15px;
     border-right: 1px solid #e6e6e6;
     border-left: 1px solid #e6e6e6;
     border-top: 1px solid #e6e6e6;
-    border-radius: 4px;
+    border-bottom: 1px solid #e6e6e6;
 }
-.entry-box:hover {
-    box-shadow: 2px 2px 8px rgba(0,0,0,.2);
-    border-color: #d6d6d6;
+
+.entry-box-top {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
+
+.entry-box-bottom {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
 .article-entry-header {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font: inherit;
-    vertical-align: baseline;
 }
 .article-entry-title {
     text-align: left;
-    margin-bottom: 10px;
+    height: 30px;
+    line-height: 30px;
 }
 .article-entry-title a {
     text-decoration: none;
-    color: #005999;
-    font-size: 18px;
+    color: #222;
+    font-size: 15px;
+    font-weight: 400;
+}
+.article-entry-title a:hover  {
+    color: #777;
+}
+.article-entry-title span:hover  {
+    color: #777;
 }
 .article-entry-info {
-    height: 35px;
+    height: 30px;
+    line-height: 30px;
 }
 .article-entry-info .base-info {
     float: left;
 }
-.article-entry-info .main-info {
+.main-info {
+    text-align: right|center;
+    display: inline-block;
     float: right;
+    vertical-align: center;
+    padding: 20px 0;
 }
+.article-center {
+    display: inline-block;
+    vertical-align: center;
+}
+.main-info span{
+    font-size: 14px;
+    color: #337ab7;
+}
+
+.count-right {
+}
+
 .footer {
 	background: #474E5D;
 	padding: 15px 0 5px;
@@ -312,7 +340,7 @@ ul.comments .disabled-comment-admin-btn {
     font-weight: normal;
     font-size: 14px;
     text-align: center;
-    margin: 5px;
+    margin: 3px;
     border-radius: 4px;
 }
 
@@ -324,4 +352,8 @@ ul.comments .disabled-comment-admin-btn {
     background-color: rgba(1,26,252,0.18);
     border-radius: 2px;
     text-align: center;
+}
+
+.node {
+    color: #777;
 }
