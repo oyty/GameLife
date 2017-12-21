@@ -306,6 +306,7 @@ class Article(db.Model):
     title = db.Column(db.String(64), unique=True)
     content = db.Column(db.Text)
     summary = db.Column(db.Text)
+    # tags = db.Column(db.Text)  # tags列表以，分割
     create_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     update_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     num_of_view = db.Column(db.Integer, default=0)
@@ -344,6 +345,31 @@ class Article(db.Model):
 
     def __repr__(self):
         return '<Article %r>' % self.title
+
+
+class Tag(db.Model):
+    __tablename__ = 'tag'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    num = db.Column(db.Integer)  # 当前tag的引用数
+
+    @staticmethod
+    def insert_tags():
+        tag_info = Tag(name=u'android',
+                       num=10)
+        tag_info1 = Tag(name=u'数据库',
+                       num=13)
+        db.session.add(tag_info)
+        db.session.commit()
+        db.session.add(tag_info1)
+        db.session.commit()
+
+
+class TagMap(db.Model):
+    __tablename__ = 'tagmap'
+    id = db.Column(db.Integer, primary_key=True)
+    tagid = db.Column(db.Integer, db.ForeignKey('tag.id'))
+    articleid = db.Column(db.Integer, db.ForeignKey('articles.id'))
 
 
 class BlogInfo(db.Model):

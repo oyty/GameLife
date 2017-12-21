@@ -11,7 +11,7 @@ from flask import render_template, redirect, flash, \
 from flask_login import login_required, current_user
 from . import admin
 from ..models import ArticleType, Source, Article, article_types, \
-    Comment, User, Follow, Menu, ArticleTypeSetting, BlogInfo, Plugin
+    Comment, User, Follow, Menu, ArticleTypeSetting, BlogInfo, Plugin, Tag
 from .forms import SubmitArticlesForm, ManageArticlesForm, DeleteArticleForm, \
     DeleteArticlesForm, AdminCommentForm, DeleteCommentsForm, AddArticleTypeForm, \
     EditArticleTypeForm, AddArticleTypeNavForm, EditArticleNavTypeForm, SortArticleNavTypeForm, \
@@ -874,3 +874,12 @@ def edit_user_info():
 @login_required
 def help():
     return render_template('admin/help_page.html')
+
+
+@admin.route('/manage_tags')
+@login_required
+def manageTags():
+    tags = Tag.query.all()
+    return render_template('admin/manage_tags.html', tags = tags)
+
+

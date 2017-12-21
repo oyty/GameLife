@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from app import create_app, db
 from app.models import ArticleType, article_types, Source, \
     Comment, Article, User, Menu, ArticleTypeSetting, BlogInfo, \
-    Plugin, BlogView
+    Plugin, BlogView, Tag
 
 
 app = create_app()
@@ -60,6 +60,7 @@ def deploy(deploy_type):
         Plugin.insert_system_plugin()
         # step_7:insert blog view
         BlogView.insert_view()
+        Tag.insert_tags()
 
     # You must run `python manage.py deploy product` before run `python manage.py deploy test_data`
     if deploy_type == 'test_data':
