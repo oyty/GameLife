@@ -15,6 +15,7 @@ class SubmitArticlesForm(CommonForm):
     title = StringField(u'博文标题', validators=[DataRequired(), Length(1, 64)])
     content = TextAreaField(u'博文内容', validators=[DataRequired()])
     summary = TextAreaField(u'博文摘要', validators=[DataRequired()])
+    tags = TextAreaField(u'博文标签（以英文逗号相隔）', validators=[DataRequired()])
 
 
 class ManageArticlesForm(CommonForm):
@@ -41,7 +42,10 @@ class AddArticleTypeForm(Form):
     name = StringField(u'分类名称', validators=[DataRequired(), Length(1, 64)])
     introduction = TextAreaField(u'分类介绍')
     setting_hide = SelectField(u'属性', coerce=int, validators=[DataRequired()])
+
     menus = SelectField(u'所属导航', coerce=int, validators=[DataRequired()])
+
+
 # You must add coerce=int, or the SelectFile validate function only validate the int data
 
 
@@ -84,3 +88,7 @@ class EditUserInfoForm(Form):
     username = StringField(u'昵称', validators=[DataRequired()])
     email = StringField(u'电子邮件', validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField(u'密码确认', validators=[DataRequired()])
+
+
+class AddNewTagForm(Form):
+    tag_name = StringField(u'tag', validators=[DataRequired()])

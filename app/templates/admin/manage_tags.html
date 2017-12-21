@@ -1,11 +1,35 @@
 {% extends 'admin/admin_base.html' %}
 
 {% block title %}
-    标签管理
+标签管理
 {% endblock %}
 
 {% block admin_content %}
 <div class="entry-box">
     <h4><strong>标签管理</strong></h4>
+    <br>
+
+    <div>
+        {% for tag in tags %}
+            <span class="tag">{{ tag.name }}<span class="tag_num"> {{ tag.num }}</span></span>
+        {% endfor %}
+    </div>
+    <br>
+
+    <div>
+        <span style="margin-left: 5px; font: bold; font-weight:bold;">添加标签</span>
+
+        <form id="addTag" method="post"
+              action="{{ url_for('admin.manageTags') }}">
+            {{ form.csrf_token }}
+            <div style="height: 60px;">
+                {{ form.tag_name(class='form-control col-md-2', type='text', style='width: 200px; margin-top: 10px;',
+                placeholder='新标签...', required='') }}
+                <button type="submit" style="margin-left: 20px; margin-top: 10px;" class="btn btn-success col-md-1">添加
+                </button>
+            </div>
+        </form>
+    </div>
+
 </div>
 {% endblock %}

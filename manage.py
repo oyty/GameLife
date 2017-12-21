@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from app import create_app, db
 from app.models import ArticleType, article_types, Source, \
     Comment, Article, User, Menu, ArticleTypeSetting, BlogInfo, \
-    Plugin, BlogView, Tag
+    Plugin, BlogView, Tag, TagMap
 
 
 app = create_app()
@@ -25,13 +25,15 @@ app.jinja_env.globals['Source'] = Source
 app.jinja_env.globals['Article'] = Article
 app.jinja_env.globals['Comment'] = Comment
 app.jinja_env.globals['BlogView'] = BlogView
+app.jinja_env.globals['Tag'] = Tag
+app.jinja_env.globals['TagMap'] = TagMap
 
 
 def make_shell_context():
     return dict(db=db, ArticleType=ArticleType, Source=Source,
                 Comment=Comment, Article=Article, User=User, Menu=Menu,
                 ArticleTypeSetting=ArticleTypeSetting, BlogInfo=BlogInfo,
-                Plugin=Plugin, BlogView=BlogView)
+                Plugin=Plugin, BlogView=BlogView, Tag=Tag, TagMap=TagMap)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 
@@ -40,7 +42,7 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 def deploy(deploy_type):
     from flask_migrate import upgrade
     from app.models import BlogInfo, User, ArticleTypeSetting, Source, \
-        ArticleType, Plugin, BlogView, Comment
+        ArticleType, Plugin, BlogView, Comment, Tag
 
     # upgrade database to the latest version
     upgrade()

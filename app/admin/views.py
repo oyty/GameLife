@@ -15,7 +15,7 @@ from ..models import ArticleType, Source, Article, article_types, \
 from .forms import SubmitArticlesForm, ManageArticlesForm, DeleteArticleForm, \
     DeleteArticlesForm, AdminCommentForm, DeleteCommentsForm, AddArticleTypeForm, \
     EditArticleTypeForm, AddArticleTypeNavForm, EditArticleNavTypeForm, SortArticleNavTypeForm, \
-    CustomBlogInfoForm, AddBlogPluginForm, ChangePasswordForm, EditUserInfoForm
+    CustomBlogInfoForm, AddBlogPluginForm, ChangePasswordForm, EditUserInfoForm, AddNewTagForm
 from .. import db
 
 
@@ -34,7 +34,6 @@ def submitArticles():
     form.source.choices = sources
     types = [(t.id, t.name) for t in ArticleType.query.all()]
     form.types.choices = types
-
     form.source.data = Source.query.filter_by(name='原创').first().id
 
     if form.validate_on_submit():
@@ -43,6 +42,17 @@ def submitArticles():
         content = form.content.data
         type_id = form.types.data
         summary = form.summary.data
+        tags = form.tags.data.split(',')
+        for tag in tags:
+            if not Tag.query.filter_by(name=tag.lower()).first():
+                new_tag = Tag(name=tag.lower(), num=1)
+                db.session.add(new_tag)
+                db.session.commit()
+            else:
+                exist_tag = Tag.query.filter_by(name=tag).first()
+                exist_tag.num = int(exist_tag.num) + 1
+                db.session.add(exist_tag)
+                db.session.commit()
 
         source = Source.query.get(source_id)
         articleType = ArticleType.query.get(type_id)
@@ -876,10 +886,21 @@ def help():
     return render_template('admin/help_page.html')
 
 
-@admin.route('/manage_tags')
+@admin.route('/manage_tags', methods=['GET', 'POST'])
 @login_required
 def manageTags():
+    form = AddNewTagForm()
     tags = Tag.query.all()
-    return render_template('admin/manage_tags.html', tags = tags)
+    if form.validate_on_submit():
+        if Tag.query.filter_by(name=form.tag_name.data).first():
+            flash(u'标签已存在', 'danger')
+        else:
+            tag = Tag(name=form.tag_name.data, num=0)
+            db.session.add(tag)
+            db.session.commit()
+            flash(u'标签添加成功！', 'success')
+            tags = Tag.query.all()
+            form.tag_name.data = ''
+    return render_template('admin/manage_tags.html', tags=tags, form=form)
 
 

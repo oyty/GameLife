@@ -17,6 +17,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
+    print(SQLALCHEMY_DATABASE_URI)
+
     ARTICLES_PER_PAGE = 10
     COMMENTS_PER_PAGE = 6
 
