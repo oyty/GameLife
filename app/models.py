@@ -300,13 +300,23 @@ class Comment(db.Model):
             return self.followed.first().followed.author_name
 
 
+tag_map = db.Table('tag_map',
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
+    db.Column('article_id', db.Integer, db.ForeignKey('articles.id'))
+)
+
+
 class Article(db.Model):
     __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), unique=True)
     content = db.Column(db.Text)
     summary = db.Column(db.Text)
-    tags = db.Column(db.String(100))  # tags列表以，分割
+    tags = db.relationship('Tag',
+                           secondary=tag_map,
+                           backref=db.backref('articles', lazy='dynamic'),
+                           lazy='dynamic')
+
     create_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     update_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     num_of_view = db.Column(db.Integer, default=0)
@@ -359,13 +369,6 @@ class Tag(db.Model):
                        num=10)
         db.session.add(tag_info)
         db.session.commit()
-
-
-class TagMap(db.Model):
-    __tablename__ = 'tag_map'
-    id = db.Column(db.Integer, primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'))
-    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
 
 
 class BlogInfo(db.Model):
@@ -428,3 +431,16 @@ class BlogView(db.Model):
         view.num_of_view += 1
         db.session.add(view)
         db.session.commit()
+
+
+class Motto(db.Model):
+    __tablename__ = 'motto'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(300))
+    author = db.Column(db.String(64))
+
+    @staticmethod
+    def insert_mottos():
+        handle = open('./source/motto.txt')
+        for line in handle.read():
+            print(line)

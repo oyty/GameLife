@@ -13,14 +13,6 @@ GameLife -{{ article.title }}
         <textarea style="display:none;" name="editormd-markdown-doc">{{ article.content | safe }}</textarea>
     </div>
 
-    <div class="article-add-info">
-        <p>
-            <span class="glyphicon glyphicon-time">
-                博文最后更新时间：
-            </span>
-            {{ moment(article.update_time.replace(microsecond=0)).format('LLL') }}
-        </p>
-    </div>
     {% if current_user.is_authenticated %}
     <div class="article-edit">
         <a href="{{ url_for('admin.editArticles', id=article.id) }}">
@@ -31,14 +23,6 @@ GameLife -{{ article.title }}
         </a>
     </div>
     {% endif %}
-    <hr>
-    <h4 id="comments"><span class="glyphicon glyphicon-comment">评论</span></h4>
-    {% include "_article_comments.html" %}
-    <div class="pagination">
-        {{ macros.pagination_widget(pagination, endpoint, id=id, fragment='#comments') }}
-    </div>
-    <h4 id="submit-comment"><span class="glyphicon glyphicon-comment">发表评论</span></h4>
-    {% include "_submit_comment.html" %}
 </div>
 {% endblock %}
 

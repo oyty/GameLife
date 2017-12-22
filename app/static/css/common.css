@@ -343,6 +343,17 @@ ul.comments .disabled-comment-admin-btn {
     margin: 3px;
     border-radius: 4px;
 }
+.tag a:hover {
+    text-decoration:none;
+}
+.tag a:visited {
+    text-decoration:none;
+}
+.tag-select {
+    color: #407DB5;
+}
+
+
 
 .tag_num {
     margin-left: 6px;

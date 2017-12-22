@@ -1,6 +1,7 @@
 <div class="article-center">
     <div class="article-entry-header">
         <div class="article-entry-title">
+
             <a href="{{ url_for('.articleDetails', id=article.id) }}">
                 <span class="node">{{ article.articleType.name }}&nbsp;</span>
                 {{ article.title }}
@@ -10,9 +11,16 @@
     <div class="article-entry-info">
         <div class="base-info">
             <span style="color: #777; font-size: 13px;">{{ moment(article.create_time.date()).format('LL') }}</span>&nbsp;
-            {% set list = article.tags.split(',') %}
-            {% for tag in list %}
-            <span class="tag">{{ tag }}</span>
+            {% for tag in article.tags %}
+                {% if endpoint == '.index' %}
+                    {% if tag_name == tag.name %}
+                        <span class="tag tag-select">{{ tag.name }}</span>
+                    {% else %}
+                        <span class="tag">{{ tag.name }}</span>
+                    {% endif %}
+                {% else %}
+                    <span class="tag"><a href="{{ url_for('main.tags', tag_name=tag.name) }}">{{ tag.name }}</a></span>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

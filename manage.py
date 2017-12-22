@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from app import create_app, db
 from app.models import ArticleType, article_types, Source, \
     Comment, Article, User, Menu, ArticleTypeSetting, BlogInfo, \
-    Plugin, BlogView, Tag, TagMap
+    Plugin, BlogView, Tag, Motto
 
 
 app = create_app()
@@ -26,14 +26,13 @@ app.jinja_env.globals['Article'] = Article
 app.jinja_env.globals['Comment'] = Comment
 app.jinja_env.globals['BlogView'] = BlogView
 app.jinja_env.globals['Tag'] = Tag
-app.jinja_env.globals['TagMap'] = TagMap
 
 
 def make_shell_context():
     return dict(db=db, ArticleType=ArticleType, Source=Source,
                 Comment=Comment, Article=Article, User=User, Menu=Menu,
                 ArticleTypeSetting=ArticleTypeSetting, BlogInfo=BlogInfo,
-                Plugin=Plugin, BlogView=BlogView, Tag=Tag, TagMap=TagMap)
+                Plugin=Plugin, BlogView=BlogView, Tag=Tag)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 
@@ -62,7 +61,8 @@ def deploy(deploy_type):
         Plugin.insert_system_plugin()
         # step_7:insert blog view
         BlogView.insert_view()
-        Tag.insert_tags()
+        # step_8:insert mottos
+        # Motto.insert_mottos()
 
     # You must run `python manage.py deploy product` before run `python manage.py deploy test_data`
     if deploy_type == 'test_data':
@@ -79,6 +79,8 @@ def deploy(deploy_type):
         # step_4:generate random comments
         Comment.generate_fake(300)
 
+    if deploy_type == 'motto':
+        Motto.insert_mottos()
 
 if __name__ == '__main__':
     manager.run()

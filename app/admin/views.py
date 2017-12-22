@@ -42,28 +42,31 @@ def submitArticles():
         content = form.content.data
         type_id = form.types.data
         summary = form.summary.data
-        tags = form.tags.data.split(',')
-        for tag in tags:
-            if not Tag.query.filter_by(name=tag.lower()).first():
-                new_tag = Tag(name=tag.lower(), num=1)
-                db.session.add(new_tag)
-                db.session.commit()
-            else:
-                exist_tag = Tag.query.filter_by(name=tag).first()
-                exist_tag.num = int(exist_tag.num) + 1
-                db.session.add(exist_tag)
-                db.session.commit()
 
         source = Source.query.get(source_id)
         articleType = ArticleType.query.get(type_id)
 
         if source and articleType:
             article = Article(title=title, content=content, summary=summary,
-                              source=source, articleType=articleType, tags=form.tags.data)
+                              source=source, articleType=articleType)
+            tags = form.tags.data.split(',')
+            for tag in tags:
+                if not Tag.query.filter_by(name=tag.lower()).first():
+                    new_tag = Tag(name=tag.lower(), num=1)
+                    db.session.add(new_tag)
+                    db.session.commit()
+                    article.tags.append(new_tag)
+                else:
+                    exist_tag = Tag.query.filter_by(name=tag).first()
+                    exist_tag.num = int(exist_tag.num) + 1
+                    db.session.add(exist_tag)
+                    db.session.commit()
+                    article.tags.append(exist_tag)
             db.session.add(article)
             db.session.commit()
             flash(u'发表博文成功！', 'success')
             article_id = Article.query.filter_by(title=title).first().id
+
             return redirect(url_for('main.articleDetails', id=article_id))
     if form.errors:
         flash(u'发表博文失败', 'danger')
