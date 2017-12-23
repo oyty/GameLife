@@ -1,11 +1,16 @@
 <div class="article-center">
     <div class="article-entry-header">
         <div class="article-entry-title">
+            {% if endpoint == '.articleDetails' %}
+                <span class="node">{{ article.articleType.name }}&nbsp;</span>
+                {{ article.title }}
 
+            {% else %}
             <a href="{{ url_for('.articleDetails', id=article.id) }}">
                 <span class="node">{{ article.articleType.name }}&nbsp;</span>
                 {{ article.title }}
             </a>
+            {% endif %}
         </div>
     </div>
     <div class="article-entry-info">
@@ -13,6 +18,8 @@
             <span style="color: #777; font-size: 13px;">{{ moment(article.create_time.date()).format('LL') }}</span>&nbsp;
             {% for tag in article.tags %}
                 {% if endpoint == '.index' %}
+                    <span class="tag">{{ tag.name }}</span>
+                {% elif endpoint == '.tags' %}
                     {% if tag_name == tag.name %}
                         <span class="tag tag-select">{{ tag.name }}</span>
                     {% else %}

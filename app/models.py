@@ -4,6 +4,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import db, login_manager
+import os
 
 article_types = {u'开发语言': ['Python', 'Java', 'JavaScript'],
                  'Linux': [u'Linux成长之路', u'Linux运维实战', 'CentOS', 'Ubuntu'],
@@ -301,9 +302,9 @@ class Comment(db.Model):
 
 
 tag_map = db.Table('tag_map',
-    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
-    db.Column('article_id', db.Integer, db.ForeignKey('articles.id'))
-)
+                   db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
+                   db.Column('article_id', db.Integer, db.ForeignKey('articles.id'))
+                   )
 
 
 class Article(db.Model):
@@ -436,11 +437,19 @@ class BlogView(db.Model):
 class Motto(db.Model):
     __tablename__ = 'motto'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(300))
+    title = db.Column(db.String(600))
     author = db.Column(db.String(64))
 
     @staticmethod
     def insert_mottos():
-        handle = open('./source/motto.txt')
-        for line in handle.read():
-            print(line)
+        path = os.path.dirname(__file__)
+        handle = open(os.path.join(path, './source/motto.txt'))
+        for line in handle:
+            mottos = line.split('@')
+            title = mottos[0].lstrip('\"')
+            author = ''
+            if len(mottos) > 1:
+                author = mottos[1].rsplit('\"')[0]
+            motto = Motto(title=title, author=author)
+            db.session.add(motto)
+            db.session.commit()

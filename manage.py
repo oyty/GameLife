@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from app import create_app, db
 from app.models import ArticleType, article_types, Source, \
     Comment, Article, User, Menu, ArticleTypeSetting, BlogInfo, \
-    Plugin, BlogView, Tag, Motto
+    Plugin, BlogView, Tag, Motto, tag_map
 
 
 app = create_app()
@@ -29,10 +29,10 @@ app.jinja_env.globals['Tag'] = Tag
 
 
 def make_shell_context():
-    return dict(db=db, ArticleType=ArticleType, Source=Source,
+    return dict(app=app, db=db, ArticleType=ArticleType, Source=Source,
                 Comment=Comment, Article=Article, User=User, Menu=Menu,
                 ArticleTypeSetting=ArticleTypeSetting, BlogInfo=BlogInfo,
-                Plugin=Plugin, BlogView=BlogView, Tag=Tag)
+                Plugin=Plugin, BlogView=BlogView, Tag=Tag, tag_map=tag_map)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 
@@ -41,10 +41,11 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 def deploy(deploy_type):
     from flask_migrate import upgrade
     from app.models import BlogInfo, User, ArticleTypeSetting, Source, \
-        ArticleType, Plugin, BlogView, Comment, Tag
+        ArticleType, Plugin, BlogView, Comment, Tag, tag_map, Article, Menu, \
+        Follow, Motto
 
     # upgrade database to the latest version
-    upgrade()
+    db.create_all()
 
     if deploy_type == 'product':
         # step_1:insert basic blog info

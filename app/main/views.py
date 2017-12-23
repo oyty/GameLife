@@ -29,8 +29,8 @@ def tags(tag_name):
         page, per_page=current_app.config['ARTICLES_PER_PAGE'],
         error_out=False)
     articles = pagination.items
-    return render_template('index.html', articles=articles, tag_name=tag_name,
-                           pagination=pagination, endpoint='.index', last_index=len(articles))
+    return render_template('index.html', articles=articles, pagination=pagination,
+                           endpoint='.tags', tag_name=tag_name, last_index=len(articles))
 
 
 @main.route('/article-types/<int:id>/')

@@ -38,6 +38,13 @@ def upgrade():
                     sa.PrimaryKeyConstraint('id'),
                     sa.UniqueConstraint('name')
                     )
+    op.create_table('tags',
+                    sa.Column('id', sa.Integer(), nullable=False),
+                    sa.Column('tag_id', sa.Integer(), nullable=False),
+                    sa.Column('article_id', sa.Integer(), nullable=False),
+                    sa.ForeignKeyConstraint(['tag_id'], ['tags.id'], ),
+                    sa.ForeignKeyConstraint(['article_id'], ['articles.id'], ),
+                    sa.PrimaryKeyConstraint('id'))
     op.create_table('blog_view',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('num_of_view', sa.BigInteger(), nullable=True),
@@ -126,7 +133,7 @@ def upgrade():
                     sa.PrimaryKeyConstraint('follower_id', 'followed_id')
                     )
     op.create_table('motto',
-                    sa.Column('title', sa.String(length=300), nullable=False),
+                    sa.Column('title', sa.String(length=600), nullable=False),
                     sa.Column('author', sa.String(length=64), nullable=True)
                     )
     ### end Alembic commands ###
