@@ -26,6 +26,7 @@ app.jinja_env.globals['Article'] = Article
 app.jinja_env.globals['Comment'] = Comment
 app.jinja_env.globals['BlogView'] = BlogView
 app.jinja_env.globals['Tag'] = Tag
+app.jinja_env.globals['Motto'] = Motto
 
 
 def make_shell_context():
@@ -45,7 +46,7 @@ def deploy(deploy_type):
         Follow, Motto
 
     # upgrade database to the latest version
-    db.create_all()
+    # upgrade()
 
     if deploy_type == 'product':
         # step_1:insert basic blog info

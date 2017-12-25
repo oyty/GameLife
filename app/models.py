@@ -445,11 +445,11 @@ class Motto(db.Model):
         path = os.path.dirname(__file__)
         handle = open(os.path.join(path, './source/motto.txt'))
         for line in handle:
-            mottos = line.split('@')
-            title = mottos[0].lstrip('\"')
+            mottos = line.split('——')
+            title = mottos[0]
             author = ''
             if len(mottos) > 1:
-                author = mottos[1].rsplit('\"')[0]
+                author = mottos[1]
             motto = Motto(title=title, author=author)
             db.session.add(motto)
             db.session.commit()

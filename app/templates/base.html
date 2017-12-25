@@ -85,7 +85,7 @@
     <div class="content">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 article">
+                <div class="col-md-9 article">
                     {% for category, message in get_flashed_messages(with_categories=true) %}
                         <div class="alert alert-{{ category }} alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -95,17 +95,41 @@
                     {% block content %}
                     {% endblock %}
                 </div>
-                <div class="col-md-4 blog_nav">
+                <div class="col-md-3 blog_nav">
                     {% block blog_nav_plugin %}
                         {% for plugin in Plugin.query.order_by(Plugin.order.asc()).all() %}
                             {% if plugin.disabled != True %}
-                                {% if plugin.content != 'system_plugin' %}
-                                    <div id="{{ plugin.title }}" class="entry-box">
-                                        <h5><strong>{{ plugin.title }}</strong></h5>
-                                        {{ plugin.content | safe }}
+
+                                {% if plugin.title == 'motto' %}
+                                    <div class="entry-box entry-box-top entry-box-bottom">
+                                        <p style="padding-top: 10px;">
+                                            <span style="font-size: 13px; color: #555555;">
+                                                {{ Motto.query[BlogView.query.first().num_of_view % 114].title | safe }}<br>
+                                                {% if Motto.query[BlogView.query.first().num_of_view % 114].author %}
+                                                    ——
+                                                {% endif %}
+                                                {{ Motto.query[BlogView.query.first().num_of_view % 114].author }}
+                                            </span>
+                                        </p>
+
                                     </div>
+                                {% elif plugin.content != 'system_plugin' %}
+                                    <!--<div id="{{ plugin.title }}" class="entry-box">-->
+                                        <!--<h5><strong>{{ plugin.title }}</strong></h5>-->
+                                        <!--{{ plugin.content | safe }}-->
+                                    <!--</div>-->
+                                {% elif plugin.title == 'newest_publish' %}
+                                    <br><br>
+                                    <div class="entry-box entry-box-top entry-box-bottom">
+                                        <ul>
+                                            {% for article in articles %}
+                                                <li>{{ article.title }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+
                                 {% else %}
-                                    <div class="entry-box">
+                                    <div class="entry-box entry-box-top entry-box-bottom">
                                         <h5><strong>博客统计</strong></h5>
                                         <p>访问量：<span class="badge">{{ BlogView.query.first().num_of_view }}</span></p>
                                         <p>

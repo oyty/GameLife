@@ -92,6 +92,18 @@ def editArticles(id):
         article.content = form.content.data
         article.summary = form.summary.data
         article.update_time = datetime.utcnow()
+
+        tags = form.tags.data.split(',')
+        tag_obs = []
+        for tag in tags:
+            if not Tag.query.filter_by(name=tag.lower()).first():
+                new_tag = Tag(name=tag.lower(), num=1)
+                tag_obs.append(new_tag)
+            else:
+                exist_tag = Tag.query.filter_by(name=tag).first()
+                exist_tag.num = int(exist_tag.num) + 1
+                tag_obs.append(exist_tag)
+        article.tags = tag_obs
         db.session.add(article)
         db.session.commit()
         flash(u'博文更新成功！', 'success')
@@ -101,6 +113,14 @@ def editArticles(id):
     form.content.data = article.content
     form.types.data = article.articleType_id
     form.summary.data = article.summary
+    tags = ''
+    count = 0
+    for tag in article.tags:
+        if count != 0:
+            tags += ','
+        tags += tag.name
+        count += 1
+    form.tags.data = tags
     return render_template('admin/submit_articles.html', form=form)
 
 

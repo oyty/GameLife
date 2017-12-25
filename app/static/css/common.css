@@ -2,6 +2,21 @@
 body {
     padding-top: 70px;
 }
+
+.container {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.article {
+    padding-right: 40px;
+}
+
+.blog_nav {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 .blog-title a:link {
     text-decoration: none;
 }
@@ -353,8 +368,6 @@ ul.comments .disabled-comment-admin-btn {
     color: #407DB5;
 }
 
-
-
 .tag_num {
     margin-left: 6px;
     padding-right: 5px;
@@ -368,3 +381,4 @@ ul.comments .disabled-comment-admin-btn {
 .node {
     color: #777;
 }
+

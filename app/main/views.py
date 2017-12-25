@@ -67,26 +67,26 @@ def articleDetails(id):
     form = CommentForm(request.form, follow=-1)
     article = Article.query.get_or_404(id)
 
-    if form.validate_on_submit():
-        comment = Comment(article=article,
-                          content=form.content.data,
-                          author_name=form.name.data,
-                          author_email=form.email.data)
-        db.session.add(comment)
-        db.session.commit()
-        followed_id = int(form.follow.data)
-        if followed_id != -1:
-            followed = Comment.query.get_or_404(followed_id)
-            f = Follow(follower=comment, followed=followed)
-            comment.comment_type = 'reply'
-            comment.reply_to = followed.author_name
-            db.session.add(f)
-            db.session.add(comment)
-            db.session.commit()
-        flash(u'提交评论成功！', 'success')
-        return redirect(url_for('.articleDetails', id=article.id, page=-1))
-    if form.errors:
-        flash(u'发表评论失败', 'danger')
+    # if form.validate_on_submit():
+    #     comment = Comment(article=article,
+    #                       content=form.content.data,
+    #                       author_name=form.name.data,
+    #                       author_email=form.email.data)
+    #     db.session.add(comment)
+    #     db.session.commit()
+    #     followed_id = int(form.follow.data)
+    #     if followed_id != -1:
+    #         followed = Comment.query.get_or_404(followed_id)
+    #         f = Follow(follower=comment, followed=followed)
+    #         comment.comment_type = 'reply'
+    #         comment.reply_to = followed.author_name
+    #         db.session.add(f)
+    #         db.session.add(comment)
+    #         db.session.commit()
+    #     flash(u'提交评论成功！', 'success')
+    #     return redirect(url_for('.articleDetails', id=article.id, page=-1))
+    # if form.errors:
+    #     flash(u'发表评论失败', 'danger')
 
     page = request.args.get('page', 1, type=int)
     if page == -1:
