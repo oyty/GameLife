@@ -2,8 +2,8 @@
 # coding=utf-8
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
-from app import create_app, db
-from app.models import ArticleType, article_types, Source, \
+from appsite import create_app, db
+from appsite.models import ArticleType, article_types, Source, \
     Comment, Article, User, Menu, ArticleTypeSetting, BlogInfo, \
     Plugin, BlogView, Tag, Motto, tag_map
 
@@ -41,7 +41,7 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 @manager.command
 def deploy(deploy_type):
     from flask_migrate import upgrade
-    from app.models import BlogInfo, User, ArticleTypeSetting, Source, \
+    from appsite.models import BlogInfo, User, ArticleTypeSetting, Source, \
         ArticleType, Plugin, BlogView, Comment, Tag, tag_map, Article, Menu, \
         Follow, Motto
 
