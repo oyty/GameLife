@@ -450,6 +450,6 @@ class Motto(db.Model):
             author = ''
             if len(mottos) > 1:
                 author = mottos[1]
-            motto = Motto(title=title, author=author)
+            motto = Motto(title=unicode(title), author=unicode(author))
             db.session.add(motto)
             db.session.commit()
